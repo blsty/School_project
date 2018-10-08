@@ -1,0 +1,20 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+index:
+  path: /
+  controller: App\Controller\LoginController::index
+
+login:
+  path: /login
+  controller: App\Controller\LoginController::login
+
+teacher:
+  path: /teacher
+  controller: App\Controller\TeacherController::teacher
+
+student:
+   path: /student
+   controller: App\Controller\StudentController::student
+
