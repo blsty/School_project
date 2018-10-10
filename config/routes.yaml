@@ -18,3 +18,8 @@ student:
    path: /student
    controller: App\Controller\StudentController::student
 
+logout:
+  path: /logout
+  #controller: App\Controller\LoginController::login
+
+
