@@ -8,7 +8,7 @@ index:
 
 login:
   path: /login
-  controller: App\Controller\LoginController::login
+  controller: App\Controller\LoginController::redirecting
 
 teacher:
   path: /teacher
@@ -21,5 +21,8 @@ student:
 logout:
   path: /logout
   #controller: App\Controller\LoginController::login
+create_subject:
+  path: /teacher/createsubject
+  controller: App\Controller\TeacherController::create_subject
 
 

@@ -9,7 +9,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class LoginController extends AbstractController
 {
 
-    public function index()
+    public function redirecting()
     {
         $user = $this->getUser();
 
@@ -19,7 +19,9 @@ class LoginController extends AbstractController
             return $this->redirectToRoute('student');
     }
 
-    public function login(AuthenticationUtils $authenticationUtils)
+
+
+    public function index(AuthenticationUtils $authenticationUtils)
     {
         return $this->render('login/login.html.twig');
     }
