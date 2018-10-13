@@ -45,3 +45,7 @@ subject:
 formquestion:
   path: teacher/formquestion
   controller: App\Controller\TeacherController::formquestion
+
+create_answer:
+  path: teacher/create_answer/{id}
+  controller: App\Controller\TeacherController::create_answer

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Question;
 use App\Entity\User;
 use App\Entity\Subject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -48,13 +49,33 @@ class TeacherController extends AbstractController
     }
 
     public function formquestion(){
+
         $request = Request::createFromGlobals()->request;
         $question = $request->get('question');
+        $id = $request->get('subject_id');
+        $subject = $this->getDoctrine()->getRepository(Subject::class)->find($id);
 
-        return new Response($question);
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $questionn = new Question();
+        $questionn->setQuestion($question);
+        $questionn->setSubject($subject);
+
+        $entityManager->persist($questionn);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('create_answer', ['id'=>$questionn->getId()]);
+
     }
 
 
+    public function  create_answer($id){
+       $question =  $this->getDoctrine()->getRepository(Question::class)->find($id);
+
+
+        return $this->render("teacher/create_answer.html.twig", ["question"=>$question->getQuestion()]);
+
+    }
 
 
     public function create_exam(){
@@ -68,6 +89,7 @@ class TeacherController extends AbstractController
 public function subject($id){
 
     $subject = $this->getDoctrine()->getRepository(Subject::class)->find($id);
-    return $this->render("teacher/subject.html.twig",["subject"=>$subject]);
+    $questions = $this->getDoctrine()->getRepository(Question::class)->findAll();
+    return $this->render("teacher/subject.html.twig",["subject"=>$subject, "questions"=>$questions]);
 }
 }
