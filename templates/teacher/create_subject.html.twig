@@ -5,16 +5,16 @@
 
     <h1>create Subject </h1>
 
-    <form>
+    <form action="{{ path("formsubject") }}" method="post">
         <div class="form-group">
             <label for="exampleInputEmail1">Subject Name</label>
-            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Subject">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <input type="text" class="form-control" id="exampleInputEmail1"  placeholder="Enter Subject" name="subject">
+            <small id="emailHelp" class="form-text text-muted"></small>
         </div>
         <div class="form-group">
             <label for="exampleFormControlTextarea1">Subject Description</label>
             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
-            placeholder="Enter subject description"></textarea>
+            placeholder="Enter subject description" name="description"></textarea>
         </div>
 
         <button type="submit" class="btn btn-primary">Add Subject</button>

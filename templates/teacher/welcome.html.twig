@@ -5,12 +5,20 @@
     {% include "/inc/navbar.html.twig" %}
 {% endblock %}
 
-    <h1>welcome {{ name }}</h1>
+    <h1>welcome {{ name }} </h1>
 
     <h2> Your subjects:</h2>
-    <br>
-    <br>
-    <h2>your exams:</h2>
+    <ul class="list-group">
+
+        {% for x in subjects %}
+        <li class="list-group-item">
+            {{ x.name }}
+            <a class="btn btn-info" href="{{ path('subject', { id:x.id }) }}">open</a>
+        </li>
+        {% endfor %}
+
+    </ul>
+
 
 
 {% endblock %}

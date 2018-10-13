@@ -1,0 +1,60 @@
+{% extends "base.html.twig" %}
+
+{% block body%}
+{% include "inc/navbar.html.twig" %}
+
+    <h2>{{ subject.name }} </h2>
+    <br>
+    <br>
+    <p>description:
+        <br>
+        {{ subject.description }}
+    </p>
+
+    <h2> create Question</h2>
+    <form  action="{{ path("formquestion") }}"  method="post">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Enter Question</label>
+            <input type="text" class="form-control"   placeholder="Enter question" name="question">
+
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Student name</th>
+            <th scope="col">Test name</th>
+            <th scope="col">mark</th>
+            <th scope="col">check answers</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+            <td>@mdo</td>
+        </tr>
+        <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+            <td>@fat</td>
+        </tr>
+        <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+            <td>@twitter</td>
+        </tr>
+        </tbody>
+    </table>
+
+{% endblock %}

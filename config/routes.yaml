@@ -25,4 +25,23 @@ create_subject:
   path: /teacher/createsubject
   controller: App\Controller\TeacherController::create_subject
 
+formsubject:
+  path: /teacher/formsubject
+  controller: App\Controller\TeacherController::formsubject
 
+view_subject:
+  path: teacher/view_subject
+  controller: App\Controller\TeacherController::view_subject
+
+create_exam:
+  path: teacher/create_exam
+  controller: App\Controller\TeacherController::create_exam
+
+
+subject:
+  path: teacher/subject/{id}
+  controller: App\Controller\TeacherController::subject
+
+formquestion:
+  path: teacher/formquestion
+  controller: App\Controller\TeacherController::formquestion
