@@ -89,7 +89,9 @@ class TeacherController extends AbstractController
 public function subject($id){
 
     $subject = $this->getDoctrine()->getRepository(Subject::class)->find($id);
-    $questions = $this->getDoctrine()->getRepository(Question::class)->findAll();
-    return $this->render("teacher/subject.html.twig",["subject"=>$subject, "questions"=>$questions]);
+    $questions = $this->getDoctrine()->getRepository(Subject::class)->find($id);
+
+    return $this->render("teacher/subject.html.twig",
+        ["subject"=>$subject, "questions"=>$questions->getQuestions()]);
 }
 }
