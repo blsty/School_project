@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Answer;
 use App\Entity\Question;
 use App\Entity\User;
 use App\Entity\Subject;
@@ -70,13 +71,46 @@ class TeacherController extends AbstractController
 
 
     public function  create_answer($id){
-       $question =  $this->getDoctrine()->getRepository(Question::class)->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $question =  $this->getDoctrine()->getRepository(Question::class)->find($id);
+       $repo= $this->getDoctrine()->getRepository(Answer::class);
+       $answer = $repo->findBy(["question"=>$question->getId()]);
 
-
-        return $this->render("teacher/create_answer.html.twig", ["question"=>$question->getQuestion()]);
+        return $this->render("teacher/create_answer.html.twig",
+            ["question"=>$question->getQuestion(),'id'=>$id, "answers" =>$answer]);
 
     }
 
+    /**
+     * @param $id
+     * @return Response
+     */
+    public function formanswer($id){
+       $entityManager = $this->getDoctrine()->getManager();
+        $request = Request::createFromGlobals()->request;
+        $answer = $request->get('answer');
+        $iscorrect = $request->get('iscorrect');
+
+
+        if ($iscorrect =='on')
+            $iscorrect =true;
+        else
+        $iscorrect= false;
+
+       $answerr = new Answer();
+       $answerr ->setAnswer($answer);
+       $answerr ->setIsCorrect($iscorrect);
+       $answerr ->setQuestion($this->getDoctrine()->
+       getRepository(Question::class)->find($id));
+
+       $entityManager->persist($answerr);
+       $entityManager->flush();
+
+       $answer = $entityManager->getRepository(Answer::class)->findAll();
+
+        return $this->redirectToRoute('create_answer',
+            ["id" => $id,"question"=>$answerr->getQuestion()->getQuestion(),"answers"=> $answer]);
+    }
 
     public function create_exam(){
 

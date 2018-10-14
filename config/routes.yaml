@@ -49,3 +49,7 @@ formquestion:
 create_answer:
   path: teacher/create_answer/{id}
   controller: App\Controller\TeacherController::create_answer
+
+formanswer:
+  path: path/formanswer/{id}
+  controller: App\Controller\TeacherController:formanswer

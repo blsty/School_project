@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 {% block body %}
     {% include "inc/navbar.html.twig" %}
-    <form >
+    <form method="post", action="{{ path('formanswer', {id:id}) }}">
         <div class="form-group">
             <h1>{{ question }}</h1>
             <label >create answer</label>
@@ -9,12 +9,17 @@
             <small id="emailHelp" class="form-text text-muted"></small>
         </div>
         <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">correct answer</label>
+            <input type="checkbox" class="form-check-input" name="iscorrect">
+            <label class="form-check-label" >correct answer</label>
         </div>
+
 
         <button type="submit" class="btn btn-primary">Add Answer</button>
     </form>
+    <h2>answers:</h2>
+    {% for a in answers %}
+        <h4>{{ a.answer }} --- {{ a.isCorrect }}</h4>
+    {% endfor %}
 
 {% endblock %}
 
