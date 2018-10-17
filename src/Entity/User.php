@@ -44,9 +44,15 @@ class User implements UserInterface, \Serializable
      */
     private $subjects;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Exam", mappedBy="user")
+     */
+    private $exams;
+
     public function __construct()
     {
         $this->subjects = new ArrayCollection();
+        $this->exams = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -171,6 +177,34 @@ class User implements UserInterface, \Serializable
             if ($subject->getUser() === $this) {
                 $subject->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Exam[]
+     */
+    public function getExams(): Collection
+    {
+        return $this->exams;
+    }
+
+    public function addExam(Exam $exam): self
+    {
+        if (!$this->exams->contains($exam)) {
+            $this->exams[] = $exam;
+            $exam->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExam(Exam $exam): self
+    {
+        if ($this->exams->contains($exam)) {
+            $this->exams->removeElement($exam);
+            $exam->removeUser($this);
         }
 
         return $this;

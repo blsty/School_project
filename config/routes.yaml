@@ -14,10 +14,6 @@ teacher:
   path: /teacher
   controller: App\Controller\TeacherController::teacher
 
-student:
-   path: /student
-   controller: App\Controller\StudentController::student
-
 logout:
   path: /logout
   #controller: App\Controller\LoginController::login
@@ -34,7 +30,7 @@ view_subject:
   controller: App\Controller\TeacherController::view_subject
 
 create_exam:
-  path: teacher/create_exam
+  path: teacher/create_exam/{subjectId}
   controller: App\Controller\TeacherController::create_exam
 
 
@@ -51,5 +47,22 @@ create_answer:
   controller: App\Controller\TeacherController::create_answer
 
 formanswer:
-  path: path/formanswer/{id}
-  controller: App\Controller\TeacherController:formanswer
+  path: /formanswer/{id}
+  controller: App\Controller\TeacherController::formanswer
+
+formexam:
+  path: /teacher/formexam/{subjectId}
+  controller: App\Controller\TeacherController::formexam
+
+exam_fill:
+  path: teacher/exam_fill/{examid}
+  controller: App\Controller\TeacherController::exam_fill
+
+form_fill:
+  path: teacher/form_fill/{id}
+  controller: App\Controller\TeacherController::form_fill
+
+
+student:
+  path: /student
+  controller: App\Controller\StudentController::index

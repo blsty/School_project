@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 
 {% block body%}
-{% include "inc/navbar.html.twig" %}
+{% include "inc/navbar_teacher.html.twig" %}
 
     <h2>{{ subject.name }} </h2>
     <br>
@@ -22,10 +22,32 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
+    <a class="btn btn-info" href="{{ path('create_exam', {subjectId:subject.id}) }}">
+        Create exam
+    </a>
+
     <table class="table table-striped">
         <thead>
         <tr>
-            <th scope="col">question</th>
+            <th scope="col"><h3>Exams:</h3></th>
+            <th scope="col"></th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for ee in subject.exams %}
+            <tr>
+                <th scope="row">{{ ee.name }}</th>
+                 <td> <a class="btn btn-info" href="{{ path('exam_fill', {examid:ee.id }) }}">open</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col"><h3>Questions:</h3></th>
             <th scope="col"></th>
 
         </tr>

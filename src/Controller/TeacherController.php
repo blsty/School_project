@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Answer;
+use App\Entity\Exam;
 use App\Entity\Question;
 use App\Entity\User;
 use App\Entity\Subject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\CssSelector\Tests\Parser\ReaderTest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,23 +16,31 @@ use Symfony\Component\Routing\Annotation\Route;
 class TeacherController extends AbstractController
 {
 
+####################################################################################################
+
     public function teacher()
     {
        # $id = $this->getUser()->getId();
         $user = $this->getUser();
-        $subjects = $this->getDoctrine()->getRepository(Subject::class)->findBy(["user"=>$user->getId()]);
+        $subjects = $this->getDoctrine()->getRepository(Subject::class)
+            ->findBy(["user"=>$user->getId()]);
         $name = $user->getUsername();
 
-        return $this->render("teacher/welcome.html.twig", ["subjects" => $subjects, "name" => $name]);
+        return $this->render("teacher/welcome.html.twig", ["subjects" => $subjects,
+            "name" => $name]);
 
       #  return $this->render("teacher/welcome.html.twig", ["name" =>$name] );
     }
+
+####################################################################################################
 
     public function create_subject(){
         $entityManager = $this->getDoctrine()->getManager();
 
         return $this->render("teacher/create_subject.html.twig");
     }
+
+####################################################################################################
 
     public function formsubject(){
         $request = Request::createFromGlobals()->request;
@@ -48,6 +58,8 @@ class TeacherController extends AbstractController
 
         return $this->redirectToRoute('teacher');
     }
+
+####################################################################################################
 
     public function formquestion(){
 
@@ -69,6 +81,7 @@ class TeacherController extends AbstractController
 
     }
 
+####################################################################################################
 
     public function  create_answer($id){
         $entityManager = $this->getDoctrine()->getManager();
@@ -81,6 +94,7 @@ class TeacherController extends AbstractController
 
     }
 
+####################################################################################################
     /**
      * @param $id
      * @return Response
@@ -112,20 +126,102 @@ class TeacherController extends AbstractController
             ["id" => $id,"question"=>$answerr->getQuestion()->getQuestion(),"answers"=> $answer]);
     }
 
-    public function create_exam(){
+####################################################################################################
 
-        return $this->render("teacher/create_exam.html.twig");
+    public function create_exam($subjectId){
+
+
+        return $this->render("teacher/create_exam.html.twig",["subjectId"=>$subjectId] );
 
     }
 
-
+####################################################################################################
 
 public function subject($id){
 
     $subject = $this->getDoctrine()->getRepository(Subject::class)->find($id);
-    $questions = $this->getDoctrine()->getRepository(Subject::class)->find($id);
+    $question = $this->getDoctrine()->getRepository(Subject::class)->find($id);
+    $exam = $this->getDoctrine()->getRepository(Exam::class)->find($id);
 
     return $this->render("teacher/subject.html.twig",
-        ["subject"=>$subject, "questions"=>$questions->getQuestions()]);
+        ["subject"=>$subject, "questions"=>$question->getQuestions(),"subjectId" => $id,
+            "exam"=>$exam]);
 }
+
+####################################################################################################
+
+public function formexam($subjectId){
+    $request = Request::createFromGlobals()->request;
+    $examName = $request->get('exam');
+    $entityManager= $this->getDoctrine()->getManager();
+
+    $exam = new Exam();
+    $exam->setName($examName);
+    $exam->setSubject($this->getDoctrine()->getRepository(Subject::class)
+        ->find($subjectId));
+    $exam->setForAll(false);
+
+    $entityManager->persist($exam);
+    $entityManager->flush();
+
+    $subject = $this->getDoctrine()->getRepository(Subject::class)->find($subjectId);
+    $questions = $this->getDoctrine()->getRepository(Subject::class)->find($subjectId);
+    $exam=$this->getDoctrine()->getRepository(Question::class)->findAll();
+
+    return $this->render("teacher/subject.html.twig",
+        ["subject"=>$subject, "questions"=>$questions->getQuestions(),"exam" =>$exam]);
+
+    }
+
+####################################################################################################
+
+    public function exam_fill($examid){
+
+
+        $exam = $this->getDoctrine()->getRepository(Exam::class)->find($examid);
+        $subjectId =$exam->getSubject()->getId();
+        $student = $this->getDoctrine()->getRepository(User::class)->findAllStudents();
+       $questions = $this->getDoctrine()->getRepository(Question::class)
+           ->findBy(["subject"=>$subjectId]);
+       $rows = count($questions);
+
+       return $this->render("teacher/exam_fill.html.twig", ["examName"=>$exam->getName(),
+           "questions"=>$questions, "students"=>$student, "examid"=>$examid,"maxRows"=>$rows] );
+    }
+
+    public function form_fill($id){
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $request = Request::createFromGlobals()->request;
+        $questionId[] = $request->get('questionid');
+        $studentId[] = $request->get('studentid');
+        $allStudents = $request->get('allstudents');#
+        $randomQuestions = $request->get('randomq');#
+        $numberOfQuestions = $request->get('numqextions');
+
+        $questionForall =$this->getDoctrine()->getRepository(Exam::class)->find($id);
+        $questions = $this->getDoctrine()->getRepository(Question::class)
+            ->findBy(["subject"=>$questionForall->getSubject()]);
+
+      if ($allStudents == 'on'){
+           $questionForall->SetForAll($allStudents);
+           $entityManager->flush();
+      }
+      else{
+          $questionForall->SetForAll(0);
+          $entityManager->flush();
+      }
+      /*if ($randomQuestions== 'on'){
+          $questions = $this->getDoctrine()->getRepository(Question::class)
+              ->findBy(["subject"=>$questionForall->getSubject()]);
+          $questions= shuffle($questions);
+
+      }*/
+
+
+
+
+    }
+
+
 }
