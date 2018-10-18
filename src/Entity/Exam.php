@@ -39,9 +39,15 @@ class Exam
      */
     private $forAll;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Question")
+     */
+    protected $questions;
+
     public function __construct()
     {
         $this->user = new ArrayCollection();
+        $this->questions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -107,6 +113,37 @@ class Exam
     public function setForAll(bool $forAll): self
     {
         $this->forAll = $forAll;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|question[]
+     */
+    public function getQuestions(): Collection
+    {
+        return $this->questions;
+    }
+
+    public function addQuestion(Question $question): self
+    {
+        if (!$this->questions->contains($question)) {
+            $this->questions[] = $question;
+            #$question->setExam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExamQuestion(Question $question): self
+    {
+        if ($this->questions->contains($question)) {
+            $this->questions->removeElement($question);
+            // set the owning side to null (unless already changed)
+            /*if ($question->getExam() === $this) {
+                $question->setExam(null);
+            }*/
+        }
 
         return $this;
     }

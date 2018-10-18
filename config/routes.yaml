@@ -62,6 +62,9 @@ form_fill:
   path: teacher/form_fill/{id}
   controller: App\Controller\TeacherController::form_fill
 
+exam_show:
+  path: teacher/form_show/{id}
+  controller: App\Controller\TeacherController::exam_show
 
 student:
   path: /student

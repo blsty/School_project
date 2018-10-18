@@ -34,9 +34,18 @@ class Question
      */
     private $answers;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="questions")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $teacher;
+
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
+        $this->examQuestions = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -98,4 +107,20 @@ class Question
 
         return $this;
     }
+
+    public function getTeacher(): ?User
+    {
+        return $this->teacher;
+    }
+
+    public function setTeacher(?User $teacher): self
+    {
+        $this->teacher = $teacher;
+
+        return $this;
+    }
+
+
+
+
 }

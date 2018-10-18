@@ -35,11 +35,6 @@ class Subject
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Test", mappedBy="subject", orphanRemoval=true)
-     */
-    private $tests;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Question", mappedBy="subject", orphanRemoval=true)
      */
     private $questions;
@@ -93,37 +88,6 @@ class Subject
     public function setDescription(string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Test[]
-     */
-    public function getTests(): Collection
-    {
-        return $this->tests;
-    }
-
-    public function addTest(Test $test): self
-    {
-        if (!$this->tests->contains($test)) {
-            $this->tests[] = $test;
-            $test->setSubject($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTest(Test $test): self
-    {
-        if ($this->tests->contains($test)) {
-            $this->tests->removeElement($test);
-            // set the owning side to null (unless already changed)
-            if ($test->getSubject() === $this) {
-                $test->setSubject(null);
-            }
-        }
 
         return $this;
     }

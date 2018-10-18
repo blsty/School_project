@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
+    {% include "inc/navbar_teacher.html.twig" %}
+
+    <h1>{{ exam.name }}</h1>
+
+    <h2>users: </h2>
+    <ul class="list-group">
+
+    {% for u in user %}
+        <li class="list-group-item"> {{ u.username }}  </li>
+    {% endfor %}
+    </ul>
+
+    <h2>Questions</h2>
+    <ul class="list-group">
+        {% for q in questions%}
+            <li class="list-group-item"> {{ q.question }}  </li>
+        {% endfor %}
+
+{% endblock %}
